@@ -77,11 +77,16 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 
+	counter := 0
 loop:
 	for {
 		select {
 		case <-ticker.C:
 			Hello()
+			counter++
+			if counter >= o.calls {
+				break loop
+			}
 		case <-interrupt:
 			break loop
 		}
